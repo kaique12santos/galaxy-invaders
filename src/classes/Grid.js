@@ -7,28 +7,25 @@ class Grid {
         this.direction= "right"
         this.moveDown=false;
         this.invaderVelocity=1;
-        this.boost = 0.1;
         this.invaders = this.init();
     }
-    init(){
+    init() {
         const array = [];
-        for (let row = 0; row < this.rows;row+=1){
 
-            for (let col = 0; col < this.cols;col+=1){
+        for (let row = 0; row < this.rows; row += 1) {
+            for (let col = 0; col < this.cols; col += 1) {
                 const invader = new Invader(
                     {
-                        x:col * 50 + 20,
-                        y:row * 37 + 70,
-
-                    } ,
+                        x: col * 50 + 20,
+                        y: row * 37 + 70,
+                    },
                     this.invaderVelocity
                 );
-                array.push(invader);
-            };
-            
-            
 
+                array.push(invader);
+            }
         }
+
         return array;
     }
 
@@ -51,7 +48,7 @@ class Grid {
         this.invaders.forEach((invader)=>{
             if(this.moveDown){
                 invader.moveDown();
-                invader.incrementVelocity(this.boost)
+                invader.incrementVelocity(0.1)
                 this.incrementVelocity= invader.velocity;
             }
 

@@ -274,6 +274,7 @@ const gameLoop = () =>{
     
     if (currentState == GameState.PLAYING){
         spawnGrid();
+        
         showGameData();
 
         drawParticle();
@@ -365,6 +366,7 @@ buttonPlay.addEventListener("click", () => {
     startScreen.remove();
     scoreUL.style.display = "block";
     currentState = GameState.PLAYING;
+    
 
     setInterval(() => {
         const invader = grid.getRandomInvader();
