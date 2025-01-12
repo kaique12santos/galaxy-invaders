@@ -1,14 +1,17 @@
 import Invader from "./Invader.js";
 
 class Grid {
-    constructor(rows,cols) {
-        this.rows=rows;
-        this.cols=cols;
-        this.direction= "right"
-        this.moveDown=false;
-        this.invaderVelocity=1;
+    constructor(rows, cols) {
+        this.rows = rows;
+        this.cols = cols;
+        this.direction = "right";
+        this.moveDown = false;
+        this.boost = 0.1;
+        this.invadersVelocity = 1;
+
         this.invaders = this.init();
     }
+
     init() {
         const array = [];
 
@@ -19,7 +22,7 @@ class Grid {
                         x: col * 50 + 20,
                         y: row * 37 + 70,
                     },
-                    this.invaderVelocity
+                    this.invadersVelocity
                 );
 
                 array.push(invader);
@@ -29,53 +32,54 @@ class Grid {
         return array;
     }
 
-    draw(ctx){
+    draw(ctx) {
         this.invaders.forEach((invader) => invader.draw(ctx));
     }
 
-    update (playerStatus){
+    update(playerStatus) {
         if (this.reachedRightBoundary()) {
-            this.direction ="left"
-            this.moveDown=true
-            
-        }else if (this.reachedLeftBoundary()) {
-            this.direction="right"
-            this.moveDown=true;
-     
+            this.direction = "left";
+            this.moveDown = true;
+        } else if (this.reachedLeftBoundary()) {
+            this.direction = "right";
+            this.moveDown = true;
         }
+
         if (!playerStatus) this.moveDown = false;
 
-        this.invaders.forEach((invader)=>{
-            if(this.moveDown){
+        this.invaders.forEach((invader) => {
+            if (this.moveDown) {
                 invader.moveDown();
-                invader.incrementVelocity(0.1)
-                this.incrementVelocity= invader.velocity;
+                invader.incrementVelocity(this.boost);
+                this.invadersVelocity = invader.velocity;
             }
 
             if (this.direction === "right") invader.moveRight();
-            if (this.direction === "left") invader.moveLeft(); 
+            if (this.direction === "left") invader.moveLeft();
         });
-        this.moveDown=false;
+
+        this.moveDown = false;
     }
-    reachedRightBoundary(){
+
+    reachedRightBoundary() {
         return this.invaders.some(
             (invader) => invader.position.x + invader.width >= innerWidth
         );
     }
-    reachedLeftBoundary(){
-        return this.invaders.some(
-            (invader) => invader.position.x <= 0
-        );
+
+    reachedLeftBoundary() {
+        return this.invaders.some((invader) => invader.position.x <= 0);
     }
-    getRandomInvader(){
+
+    getRandomInvader() {
         const index = Math.floor(Math.random() * this.invaders.length);
         return this.invaders[index];
     }
-    restart(){
+
+    restart() {
         this.invaders = this.init();
         this.direction = "right";
     }
 }
-
 
 export default Grid;
